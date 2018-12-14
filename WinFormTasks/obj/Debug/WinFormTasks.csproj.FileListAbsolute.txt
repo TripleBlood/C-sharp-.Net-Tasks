@@ -1,0 +1,10 @@
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\bin\Debug\WinFormTasks.exe.config
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\bin\Debug\WinFormTasks.exe
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\bin\Debug\WinFormTasks.pdb
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\obj\Debug\WinFormTasks.csprojAssemblyReference.cache
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\obj\Debug\WinFormTasks.Properties.Resources.resources
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\obj\Debug\WinFormTasks.csproj.GenerateResource.cache
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\obj\Debug\WinFormTasks.csproj.CoreCompileInputs.cache
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\obj\Debug\WinFormTasks.exe
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\obj\Debug\WinFormTasks.pdb
+C:\Study\c#\Tasks\WinFormTasks\WinFormTasks\obj\Debug\WinFormTasks.Form2.resources
