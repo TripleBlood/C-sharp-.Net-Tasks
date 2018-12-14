@@ -23,19 +23,41 @@ namespace WinFormTasks
             InitializeComponent();
         }
 
+        private void reloadDataset()
+        {
+            dataset.Clear();
+            adapter.Fill(dataset);
+            dataGridView1.Refresh();
+            dataGridView1.DataSource = dataset.Tables[0];
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
+            reload.Enabled = true;
+            delColorizedFromGrid.Enabled = true;
+            colorizeSelected.Enabled = true;
+            delFromDb.Enabled = true;
+
+            spellNameTextBox.Enabled = true;
+            damageTextBox.Enabled = true;
+            DamageTypeComboBox.Enabled = true;
+            insertNewSpellInDB.Enabled = true;
+
+            sortBySpellName.Enabled = true;
+            sortByDamageType.Enabled = true;
+            sortByDamage.Enabled = true;
+
+            typeSortComboBox.Enabled = true;
+            typeSortComboBoxSelect.Enabled = true;
+
+            button1.Enabled = false;
+
             String sql = "Select * from spell";
-            //String sql2 = "insert into spell(name, damage, damage_type) values ('Ice lance', 40, 'ICE')";
 
             SqlConnection con = new SqlConnection(connection.Con);
-            //SqlCommand cmd = new SqlCommand("Command String", con);
             if (con.State == ConnectionState.Closed) con.Open();
-
-            //Верхние штуки подключаются к БД
             adapter = new SqlDataAdapter(sql, con);
 
-            var commandBuilder = new SqlCommandBuilder(adapter);
             adapter.Fill(dataset);
             dataGridView1.ReadOnly = true;
             dataGridView1.DataSource = dataset.Tables[0];
@@ -46,21 +68,20 @@ namespace WinFormTasks
             con.Close();
 
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                if (Convert.ToString(row.Cells[1].Value) == "Ice lance") row.DefaultCellStyle.BackColor = Color.Red;
-            }
-        }
         
-
-        private void IceLanceGridDelete_Click(object sender, EventArgs e)
+        private void delColorizedFromGrid_Click(object sender, EventArgs e)
         {
+            List<int> indexBuffer = new List<int>();
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                if (row.DefaultCellStyle.BackColor == Color.Red) dataGridView1.Rows.RemoveAt(row.Index);
+                if (row.DefaultCellStyle.BackColor == Color.Red)
+                {
+                    indexBuffer.Add(row.Index);
+                }
+            }
+            for(int i = indexBuffer.Count-1 ; i >= 0; i--)
+            {
+                dataGridView1.Rows.RemoveAt(indexBuffer[i]);
             }
         }
 
@@ -77,22 +98,20 @@ namespace WinFormTasks
 
         private void reload_Click(object sender, EventArgs e)
         {
-            dataset.Clear();
-            adapter.Fill(dataset);
-            dataGridView1.Refresh();
-            dataGridView1.DataSource = dataset.Tables[0];
+            reloadDataset();
         }
 
         private void delFromDb_Click(object sender, EventArgs e)
         {
             List<int> idBuffer = new List<int>();
+            List<int> indexBuffer = new List<int>();
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.DefaultCellStyle.BackColor == Color.Red)
                 {
                     idBuffer.Add(Convert.ToInt32(row.Cells[0].Value));
-                    dataGridView1.Rows.RemoveAt(row.Index);
+                    indexBuffer.Add(row.Index);
                 }
             }
 
@@ -101,6 +120,10 @@ namespace WinFormTasks
                 SqlConnection con = new SqlConnection(connection.Con);
                 if (con.State == ConnectionState.Closed) con.Open();
 
+                for (int i = indexBuffer.Count - 1; i >= 0; i--)
+                {
+                    dataGridView1.Rows.RemoveAt(indexBuffer[i]);
+                }
                 foreach (int id in idBuffer)
                 {
                     SqlCommand command = new SqlCommand("delete from spell where ID = " + id + " ;", con);
@@ -108,6 +131,25 @@ namespace WinFormTasks
                 }
                 con.Close();
             }
+        }
+
+        private void insertNewSpellInDB_Click(object sender, EventArgs e)
+        {
+            String sqlQueryString = "insert into spell(name, damage, damage_type) values ('" + spellNameTextBox.Text + "', " + damageTextBox.Text + ", '" + DamageTypeComboBox.Text + "');";
+
+            int n;
+            bool isNumeric = int.TryParse(damageTextBox.Text, out n);
+
+            if (spellNameTextBox.Text != "" && damageTextBox.Text != "" && DamageTypeComboBox.Text != "" && isNumeric)
+            {
+                SqlConnection con = new SqlConnection(connection.Con);
+                if (con.State == ConnectionState.Closed) con.Open();
+                SqlCommand command = new SqlCommand(sqlQueryString, con);
+                command.ExecuteNonQuery();
+                con.Close();
+                reloadDataset();
+            }
+            else MessageBox.Show("Something is wrong...");            
         }
     }
 }
