@@ -23,12 +23,25 @@ namespace WinFormTasks
             InitializeComponent();
         }
 
+        private void setAdapter(String sql, SqlConnection con)
+        {
+             adapter = new SqlDataAdapter(sql, con);
+        }
+
         private void reloadDataset()
         {
+            String sql = "Select * from spell";
+
+            SqlConnection con = new SqlConnection(connection.Con);
+            if (con.State == ConnectionState.Closed) con.Open();
+
+            setAdapter(sql, con);
             dataset.Clear();
             adapter.Fill(dataset);
             dataGridView1.Refresh();
             dataGridView1.DataSource = dataset.Tables[0];
+
+            con.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -56,7 +69,8 @@ namespace WinFormTasks
 
             SqlConnection con = new SqlConnection(connection.Con);
             if (con.State == ConnectionState.Closed) con.Open();
-            adapter = new SqlDataAdapter(sql, con);
+
+            setAdapter(sql, con);
 
             adapter.Fill(dataset);
             dataGridView1.ReadOnly = true;
@@ -150,6 +164,41 @@ namespace WinFormTasks
                 reloadDataset();
             }
             else MessageBox.Show("Something is wrong...");            
+        }
+
+        private void sortBySpellName_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Sort(dataGridView1.Columns["name"], ListSortDirection.Ascending);
+        }
+
+        private void sortByDamageType_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Sort(dataGridView1.Columns["damage_type"], ListSortDirection.Ascending);
+        }
+
+        private void sortByDamage_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Sort(dataGridView1.Columns["damage"], ListSortDirection.Ascending);
+        }
+
+        private void typeSortComboBoxSelect_Click(object sender, EventArgs e)
+        {
+            if (typeSortComboBox.Text != "")
+            {
+                String sql = "Select * from spell where damage_type = '" + typeSortComboBox.Text + "';";
+
+                SqlConnection con = new SqlConnection(connection.Con);
+                if (con.State == ConnectionState.Closed) con.Open();
+
+                setAdapter(sql, con);
+                dataset.Clear();
+                adapter.Fill(dataset);
+                dataGridView1.Refresh();
+                dataGridView1.DataSource = dataset.Tables[0];
+
+                con.Close();
+            }
+            else MessageBox.Show("Something is wrong...");
         }
     }
 }

@@ -240,6 +240,7 @@
             this.sortBySpellName.TabIndex = 18;
             this.sortBySpellName.Text = "Spell Name";
             this.sortBySpellName.UseVisualStyleBackColor = true;
+            this.sortBySpellName.Click += new System.EventHandler(this.sortBySpellName_Click);
             // 
             // sortByDamageType
             // 
@@ -251,6 +252,7 @@
             this.sortByDamageType.TabIndex = 19;
             this.sortByDamageType.Text = "Damage Type";
             this.sortByDamageType.UseVisualStyleBackColor = true;
+            this.sortByDamageType.Click += new System.EventHandler(this.sortByDamageType_Click);
             // 
             // sortByDamage
             // 
@@ -262,6 +264,7 @@
             this.sortByDamage.TabIndex = 20;
             this.sortByDamage.Text = "Damage";
             this.sortByDamage.UseVisualStyleBackColor = true;
+            this.sortByDamage.Click += new System.EventHandler(this.sortByDamage_Click);
             // 
             // label6
             // 
@@ -299,6 +302,7 @@
             this.typeSortComboBoxSelect.TabIndex = 23;
             this.typeSortComboBoxSelect.Text = "Select";
             this.typeSortComboBoxSelect.UseVisualStyleBackColor = true;
+            this.typeSortComboBoxSelect.Click += new System.EventHandler(this.typeSortComboBoxSelect_Click);
             // 
             // Form2
             // 
